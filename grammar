@@ -1,0 +1,220 @@
+# rec desc grammar
+expr -> term {( '+' | '-' ) term}
+term -> factor {('*' | '/' | '%') factor}
+factor -> power {'^' power}
+power -> {'+' | '-'} base
+base -> '(' expr ')' | number
+
+# rec asc grammar
+expr -> expr ('+' | '-') term | term
+term -> term ('*' | '/' | '%') factor | factor
+factor -> power '^' factor | power
+power -> '-' power | '+' power | base
+base -> '(' expr ')' | number
+
+# lalr states
+i0:
+s: . e
+    terminal n: s6
+    terminal '+': s7
+    terminal '-': s8
+    terminal '(': s9
+    nonterminal b: gt5
+    nonterminal p: gt4
+    nonterminal f: gt3
+    nonterminal t: gt2
+    nonterminal e: gt1
+
+i1:
+s: e .
+e: e . '+' t
+e: e . '-' t
+    terminal $: accept
+    terminal '+': s10
+    terminal '-': s11
+        
+i2:
+e: t .
+t: t . '*' t
+t: t . '/' t
+t: t . '%' t
+    terminal $: r3
+    terminal '+': r3
+    terminal '-': r3
+    terminal ')': r3
+    terminal '*': s12
+    terminal '/': s13
+    terminal '%': s14
+
+i3:
+t: f .
+   terminal [^n'(']: r7
+
+i4:
+f: p . '^' f
+f: p .
+    terminal '^': s15
+    terminal [^n'(']: r9
+
+i5:
+p: b .
+    terminal [^n'(']: r12
+
+i6:
+b: n .
+    terminal [^n'(']: r14
+    
+i7:
+p: '+' . p
+    terminal n: s6
+    terminal '+': s7
+    terminal '-': s8
+    terminal '(': s9
+    nonterminal b: s5
+    nonterminal p: s16
+
+i8:
+p: '-' . p
+    terminal n: s6
+    terminal '+': s7
+    terminal '-': s8
+    terminal '(': s9
+    nonterminal b: s5
+    nonterminal p: s17
+
+i9:
+b: '(' . e ')'
+    terminal n: s6
+    terminal '+': s7
+    terminal '-': s8
+    terminal '(': s9
+    nonterminal b: gt5
+    nonterminal p: gt4
+    nonterminal f: gt3
+    nonterminal t: gt2
+    nonterminal e: gt18
+
+i10:
+e: e '+' . t
+    terminal n: s6
+    terminal '+': s7
+    terminal '-': s8
+    terminal '(': s9
+    nonterminal b: gt5
+    nonterminal p: gt4
+    nonterminal f: gt3
+    nonterminal t: gt19
+
+i11:
+e: e '-' . t
+    terminal n: s6
+    terminal '+': s7
+    terminal '-': s8
+    terminal '(': s9
+    nonterminal b: gt5
+    nonterminal p: gt4
+    nonterminal f: gt3
+    nonterminal t: gt20
+
+i12:
+t: t '*' . f
+    terminal n: s6
+    terminal '+': s7
+    terminal '-': s8
+    terminal '(': s9
+    nonterminal b: gt5
+    nonterminal p: gt4
+    nonterminal f: gt21
+
+i13:
+t: t '/' . f
+    terminal n: s6
+    terminal '+': s7
+    terminal '-': s8
+    terminal '(': s9
+    nonterminal b: gt5
+    nonterminal p: gt4
+    nonterminal f: gt22
+
+i14:
+t: t '%' . f
+    terminal n: s6
+    terminal '+': s7
+    terminal '-': s8
+    terminal '(': s9
+    nonterminal b: gt5
+    nonterminal p: gt4
+    nonterminal f: gt23
+
+i15:
+f: p '^' . f
+    terminal n: s6
+    terminal '+': s7
+    terminal '-': s8
+    terminal '(': s9
+    nonterminal b: gt5
+    nonterminal p: gt4
+    nonterminal f: gt24
+
+i16:
+p: '+' p .
+    terminal [^n'(']: r10
+
+i17:
+p: '-' p .
+    terminal [^n'(']: r11
+
+i18:
+b: '(' e . ')'
+e: e . '+' t
+e: e . '-' t
+    terminal '+': s10
+    terminal '-': s11
+    terminal ')': s25
+    
+i19:
+e: e '+' t .
+t: t . '*' f
+t: t . '/' f
+t: t . '%' f
+    terminal $: r1
+    terminal '+': r1
+    terminal '-': r1
+    terminal ')': r1
+    terminal '*': s12
+    terminal '/': s13
+    terminal '%': s14
+
+i20:
+e: e '-' t .
+t: t . '*' f
+t: t . '/' f
+t: t . '%' f
+    terminal $: r2
+    terminal '+': r2
+    terminal '-': r2
+    terminal ')': r2
+    terminal '*': s12
+    terminal '/': s13
+    terminal '%': s14
+
+i21:
+t: t '*' f .
+   terminal [^N'(']: r4
+
+i22:
+t: t '/' f .
+   terminal [^N'(']: r5
+
+i23:
+t: t '%' f .
+   terminal [^N'(']: r6
+
+i24:
+f: p '^' f .
+   terminal [^N'(']: r8
+
+i25:
+b: '(' e ')' .
+   terminal [^N'(']: r13
+
