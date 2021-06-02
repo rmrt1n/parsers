@@ -1,6 +1,8 @@
 (define-library (parser)
   (import (rec-desc)
-          (rec-asc))
+          (rec-asc)
+          (pratt))
   (export rec-desc-parse
-          rec-asc-parse))
+          rec-asc-parse
+          pratt-parse))
 

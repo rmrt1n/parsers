@@ -123,4 +123,7 @@
 (display "testing recursive ascent parser\n")
 (test-all rec-asc-parse)
 (newline)
+(display "testing pratt parser\n")
+(test-all pratt-parse)
+(newline)
 

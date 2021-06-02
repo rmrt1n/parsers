@@ -4,18 +4,20 @@
         (parser)
         (utils))
 
+(define lookup
+  (list rec-desc-parse rec-asc-parse pratt-parse))
+
 (define (main)
-  (let loop ((i 1))
+  (let loop ((i 0))
     (display "> ")
     (let* ((inp (read-line))
            (tokens (tokenize inp)))
       (display
        (eval-ast
-        (if (positive? i)
-          (rec-asc-parse tokens)
-          (rec-desc-parse tokens))))
+        ((list-ref lookup (remainder i 3)) tokens)))
       (newline))
-    (loop (* -1 i))))
+    (display (remainder i 3))
+    (loop (+ 1 i))))
 
 (main)
 

@@ -1,0 +1,68 @@
+(define-library (pratt)
+  (import (scheme base)
+          (chibi match)
+          (utils))
+  (export pratt-parse)
+  (begin
+    (define (pratt-parse tokens)
+      (if (null? tokens)
+        '()
+        (car (parse-expr tokens 0))))
+
+    (define (bp token)
+      (match token
+        ((or 'PLUS 'MINUS) 1)
+        ((or 'STAR 'SLASH 'PERCENT) 2)
+        ('CARET 3)
+        (_ 0)))
+
+    (define (nud tokens)
+      (match tokens
+        ;; unary op has higher precedence than binop
+        (((and hd 'PLUS) tl ...)
+         (match-let (((expr tl) (parse-expr tl 4)))
+           (list `(+ ,expr) tl)))
+        (((and hd 'MINUS) tl ...)
+         (match-let (((expr tl) (parse-expr tl 4)))
+           (list `(- ,expr) tl)))
+        (('LPAREN tl ...)
+         (match-let (((expr tl) (parse-expr tl 0)))
+           (match tl
+             (('RPAREN tl ...) (list expr tl))
+             (_ (syntax-err)))))
+        (((? number? hd) tl ...)
+         (list hd tl))
+        (_ (syntax-err))))
+
+    (define (led tokens left)
+      (match tokens
+        (((and hd 'CARET) tl ...)
+         (match-let (((right tl) (parse-expr tl (- (bp hd) 1))))
+           (list `(expt ,left ,right) tl)))
+        (((and hd 'PLUS) tl ...)
+         (match-let (((right tl) (parse-expr tl (bp hd))))
+           (list `(+ ,left ,right) tl)))
+        (((and hd 'MINUS) tl ...)
+         (match-let (((right tl) (parse-expr tl (bp hd))))
+           (list `(- ,left ,right) tl)))
+        (((and hd 'STAR) tl ...)
+         (match-let (((right tl) (parse-expr tl (bp hd))))
+           (list `(* ,left ,right) tl)))
+        (((and hd 'SLASH) tl ...)
+         (match-let (((right tl) (parse-expr tl (bp hd))))
+           (list `(/ ,left ,right) tl)))
+        (((and hd 'PERCENT) tl ...)
+         (match-let (((right tl) (parse-expr tl (bp hd))))
+           (list `(remainder ,left ,right) tl)))
+        (_ (syntax-err))))
+
+    (define (parse-expr tokens rbp)
+      (match-let loop (((left tokens) (nud tokens)))
+        (match tokens
+          (() (list left tokens))
+          (((or (? number? hd) 'LPAREN)) (syntax-err))
+          (_ (if (<= (bp (car tokens)) rbp)
+               (list left tokens)
+               (loop (led tokens left)))))))
+    ))
+

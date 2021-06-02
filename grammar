@@ -12,6 +12,13 @@ factor -> power '^' factor | power
 power -> '-' power | '+' power | base
 base -> '(' expr ')' | number
 
+# operator precedence
+'+' | '-' -> 1
+'*' | '/' | '%' -> 2
+'^' -> 3
+unary '+' | '-' -> 4
+$ | number -> 0
+
 # lalr states
 i0:
 s: . e
