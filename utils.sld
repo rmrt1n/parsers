@@ -1,8 +1,9 @@
 (define-library (utils)
   (import (scheme base)
+          (scheme write)
           (scheme eval)
           (scheme repl))
-  (export syntax-err eval-ast)
+  (export syntax-err eval-ast displayln)
   (begin
     (define (syntax-err)
       (error "err syntax error"))
@@ -14,5 +15,10 @@
                (real-num (inexact result)))
           (if (zero? (floor-remainder real-num 1))
             result
-            real-num))))))
+            real-num))))
+
+    (define (displayln str)
+      (display str)
+      (newline))
+    ))
 

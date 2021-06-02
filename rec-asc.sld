@@ -12,16 +12,16 @@
     (define (state0 tokens)
       (let ((node-tl
              (match tokens
-               (((? number? hd) tl ...) (state6 tokens))
+               (((? number? hd) tl ...) (list hd tl))
                (('PLUS tl ...) (state7 tl))
                (('MINUS tl ...) (state8 tl))
                (('LPAREN tl ...) (state9 tl))
                (_ (syntax-err)))))
        (match-let* (((base tl) node-tl)
-                     ((power tl) (state5 tl base))
-                     ((factor tl) (state4 tl power))
-                     ((term tl) (state3 tl factor))
-                     ((expr tl) (state2 tl term)))
+                     ;; ((power tl) (state5 tl base))
+                     ((factor tl) (state4 tl base))
+                     ;; ((term tl) (state3 tl factor))
+                     ((expr tl) (state2 tl factor)))
           (state1 tl expr))))
 
     (define (state1 tokens node)
@@ -55,10 +55,10 @@
            (list node tokens))
           (_ (syntax-err)))))
 
-    (define (state3 tokens node)
-      (match tokens
-        (((or 'NUMBER 'LPAREN) tl ...) (syntax-err))
-        (_ (list node tokens))))
+    ;; (define (state3 tokens node)
+      ;; (match tokens
+        ;; (((or 'NUMBER 'LPAREN) tl ...) (syntax-err))
+        ;; (_ (list node tokens))))
 
     (define (state4 tokens node)
       (match tokens
@@ -66,130 +66,130 @@
         (((or 'NUMBER 'LPAREN) tl ...) (syntax-err))
         (_ (list node tokens))))
   
-    (define state5 state3)
+    ;; (define state5 state3)
 
-    (define (state6 tokens)
-      (match (cdr tokens)
-        (((or (? number? hd) 'LPAREN) tl ...) (syntax-err))
-        (_ (list (car tokens) (cdr tokens)))))
+    ;; (define (list hd tl)
+      ;; (match (cdr tokens)
+        ;; (((or (? number? hd) 'LPAREN) tl ...) (syntax-err))
+        ;; (_ (list (car tokens) (cdr tokens)))))
 
     (define (state7 tokens)
       (let ((node-tl
              (match tokens
-               (((? number? hd) tl ...) (state6 tokens))
+               (((? number? hd) tl ...) (list hd tl))
                (('PLUS tl ...) (state7 tl))
                (('MINUS tl ...) (state8 tl))
                (('LPAREN tl ...) (state9 tl))
                (_ (syntax-err)))))
         (match-let* (((base tl) node-tl)
-                     ((power tl) (state5 tl base)))
-          (state16 tl power))))
+                     )
+          (state16 tl base))))
 
     (define (state8 tokens)
       (let ((node-tl
              (match tokens
-               (((? number? hd) tl ...) (state6 tokens))
+               (((? number? hd) tl ...) (list hd tl))
                (('PLUS tl ...) (state7 tl))
                (('MINUS tl ...) (state8 tl))
                (('LPAREN tl ...) (state9 tl))
                (_ (syntax-err)))))
         (match-let* (((base tl) node-tl)
-                     ((power tl) (state5 tl base)))
-          (state17 tl power))))
+                     )
+          (state17 tl base))))
 
     (define (state9 tokens)
       (let ((node-tl
              (match tokens
-               (((? number? hd) tl ...) (state6 tokens))
+               (((? number? hd) tl ...) (list hd tl))
                (('PLUS tl ...) (state7 tl))
                (('MINUS tl ...) (state8 tl))
                (('LPAREN tl ...) (state9 tl))
                (_ (syntax-err)))))
         (match-let* (((base tl) node-tl)
-                     ((power tl) (state5 tl base))
-                     ((factor tl) (state4 tl power))
-                     ((term tl) (state3 tl factor))
-                     ((expr tl) (state2 tl term)))
+                     ;; ((power tl) (state5 tl base))
+                     ((factor tl) (state4 tl base))
+                     ;; ((term tl) (state3 tl factor))
+                     ((expr tl) (state2 tl factor)))
           (state18 tl expr))))
     
     (define (state10 tokens node)
       (let ((node-tl
              (match tokens
-               (((? number? hd) tl ...) (state6 tokens))
+               (((? number? hd) tl ...) (list hd tl))
                (('PLUS tl ...) (state7 tl))
                (('MINUS tl ...) (state8 tl))
                (('LPAREN tl ...) (state9 tl))
                (_ (syntax-err)))))
         (match-let* (((base tl) node-tl)
-                     ((power tl) (state5 tl base))
-                     ((factor tl) (state4 tl power))
-                     ((term tl) (state3 tl factor)))
-          (state19 tl node term))))
+                     ;; ((power tl) (state5 tl base))
+                     ((factor tl) (state4 tl base)))
+                     ;; ((term tl) (state3 tl factor)))
+          (state19 tl node factor))))
 
     (define (state11 tokens node)
       (let ((node-tl
              (match tokens
-               (((? number? hd) tl ...) (state6 tokens))
+               (((? number? hd) tl ...) (list hd tl))
                (('PLUS tl ...) (state7 tl))
                (('MINUS tl ...) (state8 tl))
                (('LPAREN tl ...) (state9 tl))
                (_ (syntax-err)))))
         (match-let* (((base tl) node-tl)
-                     ((power tl) (state5 tl base))
-                     ((factor tl) (state4 tl power))
-                     ((term tl) (state3 tl factor)))
-          (state20 tl node term))))
+                     ;; ((power tl) (state5 tl base))
+                     ((factor tl) (state4 tl base)))
+                     ;; ((term tl) (state3 tl factor)))
+          (state20 tl node factor))))
 
     (define (state12 tokens node)
       (let ((node-tl
              (match tokens
-               (((? number? hd) tl ...) (state6 tokens))
+               (((? number? hd) tl ...) (list hd tl))
                (('PLUS tl ...) (state7 tl))
                (('MINUS tl ...) (state8 tl))
                (('LPAREN tl ...) (state9 tl))
                (_ (syntax-err)))))
         (match-let* (((base tl) node-tl)
-                     ((power tl) (state5 tl base))
-                     ((factor tl) (state4 tl power)))
+                     ;; ((power tl) (state5 tl base))
+                     ((factor tl) (state4 tl base)))
           (state21 tl node factor))))
 
     (define (state13 tokens node)
       (let ((node-tl
              (match tokens
-               (((? number? hd) tl ...) (state6 tokens))
+               (((? number? hd) tl ...) (list hd tl))
                (('PLUS tl ...) (state7 tl))
                (('MINUS tl ...) (state8 tl))
                (('LPAREN tl ...) (state9 tl))
                (_ (syntax-err)))))
         (match-let* (((base tl) node-tl)
-                     ((power tl) (state5 tl base))
-                     ((factor tl) (state4 tl power)))
+                     ;; ((power tl) (state5 tl base))
+                     ((factor tl) (state4 tl base)))
           (state22 tl node factor))))
 
     (define (state14 tokens node)
       (let ((node-tl
              (match tokens
-               (((? number? hd) tl ...) (state6 tokens))
+               (((? number? hd) tl ...) (list hd tl))
                (('PLUS tl ...) (state7 tl))
                (('MINUS tl ...) (state8 tl))
                (('LPAREN tl ...) (state9 tl))
                (_ (syntax-err)))))
         (match-let* (((base tl) node-tl)
-                     ((power tl) (state5 tl base))
-                     ((factor tl) (state4 tl power)))
+                     ;; ((power tl) (state5 tl base))
+                     ((factor tl) (state4 tl base)))
           (state23 tl node factor))))
 
     (define (state15 tokens node)
       (let ((node-tl
              (match tokens
-               (((? number? hd) tl ...) (state6 tokens))
+               (((? number? hd) tl ...) (list hd tl))
                (('PLUS tl ...) (state7 tl))
                (('MINUS tl ...) (state8 tl))
                (('LPAREN tl ...) (state9 tl))
                (_ (syntax-err)))))
         (match-let* (((base tl) node-tl)
-                     ((power tl) (state5 tl base))
-                     ((factor tl) (state4 tl power)))
+                     ;; ((power tl) (state5 tl base))
+                     ((factor tl) (state4 tl base)))
           (state24 tl node factor))))
 
     (define (state16 tokens node)
@@ -213,7 +213,8 @@
            (match-let (((node tokens) (state11 tl node)))
              (loop tokens node)))
           (('RPAREN tl ...)
-           (state25 tl node))
+           (list node tl))
+           ;; (state25 tl node))
           (_ (syntax-err)))))
 
     (define (state19 tokens left right)
@@ -270,6 +271,6 @@
         (((or 'NUMBER 'LPAREN) tl ...) (syntax-err))
         (_ (list `(expt ,left ,right) tokens))))
 
-    (define state25 state3)
+    ;; (define state25 state3)
     ))
 
