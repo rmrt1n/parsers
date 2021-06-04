@@ -3,7 +3,7 @@
           (scheme write)
           (scheme eval)
           (scheme repl))
-  (export syntax-err eval-ast displayln)
+  (export syntax-err eval-ast displayln display* displayln*)
   (begin
     (define (syntax-err)
       (error "err syntax error"))
@@ -17,8 +17,16 @@
             result
             real-num))))
 
+    ;; print functions
     (define (displayln str)
       (display str)
       (newline))
+
+    (define (display* . args)
+      (for-each display args))
+
+    (define (displayln* . args)
+      (for-each displayln args))
+
     ))
 

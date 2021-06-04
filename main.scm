@@ -22,12 +22,8 @@
            (tokens (tokenize inp))
            (parse-fn (list-ref lookup (remainder i 3))))
       (match-let (((result dur) (time parse-fn tokens)))
-        (displayln result)
-        (displayln parse-fn)
-        (displayln
-         (string-append "time taken: "
-                        (number->string dur)
-                        " seconds."))))
+        (displayln* result parse-fn)
+        (display* "time taken: " dur " seconds.\n")))
     (loop (+ 1 i))))
 
 (main)

@@ -51,7 +51,9 @@
           (('PERCENT tl ...)
            (match-let (((node tokens) (state14 tl node)))
              (loop tokens node)))
-         (_ (syntax-err)))))
+          (((not (or (? number? hd) 'LPAREN 'CARET)) tl ...)
+           (list node tokens))
+          (_ (syntax-err)))))
 
     (define (state3 tokens node)
       (list node tokens))
