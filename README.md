@@ -1,6 +1,6 @@
-# parsers
-an exploration of parsing techniques in r7rs scheme.  
-the parsing target are math expressions following this grammar:  
+# Parsers
+An exploration of parsing techniques in r7rs scheme.  
+The parsing target are math expressions following this grammar:  
 
 ```
 expr -> expr ('+' | '-') term | term
@@ -11,14 +11,14 @@ base -> '(' expr ')' | number
 number -> [0-9]+
 ```
 
-## techniques
-for now these are the parsing techniques I used:  
+## Techniques
+For now these are the parsing techniques I used:  
 - [recursive descent](https://en.wikipedia.org/wiki/Recursive_descent_parser) -> `rec-desc.sld`
 - [recursive ascent](https://en.wikipedia.org/wiki/Recursive_ascent_parser) -> `rec-asc.sld`
 - [pratt](https://en.wikipedia.org/wiki/Operator-precedence_parser#Pratt_parsing) -> `pratt.sld`
 
-## resources
-these are the resources I used for learning about parsers:  
+## Resources
+These are the resources I used for learning about parsers:  
 **recursive descent parsing**:  
 - [Parsing Expressions . Crafting Interpreters](https://craftinginterpreters.com/parsing-expressions.html) 
 - [Let's Build a Simple Interpreter](https://ruslanspivak.com/lsbasi-part7/)
@@ -36,3 +36,5 @@ these are the resources I used for learning about parsers:
 - [Pratt Parsing](https://dev.to/jrop/pratt-parsing)
 - [prattparser](https://github.com/richardjennings/prattparser)
 
+## License
+Distributed under the MIT License. See [LICENSE](/LICENSE) for more information.
